@@ -40,10 +40,14 @@ import os.path
 import re
 import sys
 import tarfile
+import sys
 
 import numpy as np
 from six.moves import urllib
 import tensorflow as tf
+
+## Disables all the error responses.
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 FLAGS = None
 
@@ -161,9 +165,12 @@ def run_inference_on_image(image):
     node_lookup = NodeLookup()
 
     top_k = predictions.argsort()[-FLAGS.num_top_predictions:][::-1]
+
     for node_id in top_k:
       human_string = node_lookup.id_to_string(node_id)
       score = predictions[node_id]
+
+      ## Data to send back to the server.
       print('%s (score = %.5f)' % (human_string, score))
 
 
@@ -180,16 +187,16 @@ def maybe_download_and_extract():
           filename, float(count * block_size) / float(total_size) * 100.0))
       sys.stdout.flush()
     filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
-    print()
+    #print()
     statinfo = os.stat(filepath)
-    print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
+    #print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
   tarfile.open(filepath, 'r:gz').extractall(dest_directory)
 
 
 def main(_):
-  maybe_download_and_extract()
-  image = (FLAGS.image_file if FLAGS.image_file else
-           os.path.join(FLAGS.model_dir, 'cropped_panda.jpg'))
+
+  image_file = sys.argv[1];
+  image = ('api/' + image_file)
   run_inference_on_image(image)
 
 
