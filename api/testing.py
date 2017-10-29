@@ -160,22 +160,22 @@ def run_inference_on_image(image):
 
 def maybe_download_and_extract():
   """Download and extract model tar file."""
-  dest_directory = FLAGS.model_dir
-  if not os.path.exists(dest_directory):
-    os.makedirs(dest_directory)
-  filename = DATA_URL.split('/')[-1]
-  filepath = os.path.join(dest_directory, filename)
-  if not os.path.exists(filepath):
-    def _progress(count, block_size, total_size):
-      sys.stdout.write('\r>> Downloading %s %.1f%%' % (
-          filename, float(count * block_size) / float(total_size) * 100.0))
-      sys.stdout.flush()
-    filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
-    print()
-    statinfo = os.stat(filepath)
-    print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
-  tarfile.open(filepath, 'r:gz').extractall(dest_directory)
-
+  # dest_directory = FLAGS.model_dir
+  # if not os.path.exists(dest_directory):
+  #   os.makedirs(dest_directory)
+  # filename = DATA_URL.split('/')[-1]
+  # filepath = os.path.join(dest_directory, filename)
+  # if not os.path.exists(filepath):
+  #   def _progress(count, block_size, total_size):
+  #     sys.stdout.write('\r>> Downloading %s %.1f%%' % (
+  #         filename, float(count * block_size) / float(total_size) * 100.0))
+  #     sys.stdout.flush()
+  #   filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
+  #   print()
+  #   statinfo = os.stat(filepath)
+  #   print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
+  # tarfile.open(filepath, 'r:gz').extractall(dest_directory)
+  #
 
 def main(_):
   maybe_download_and_extract()
@@ -195,7 +195,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--model_dir',
       type=str,
-      default='/tmp/imagenet',
+      default='api/nn_model/inceptionV3',
       help="""\
       Path to classify_image_graph_def.pb,
       imagenet_synset_to_human_label_map.txt, and
