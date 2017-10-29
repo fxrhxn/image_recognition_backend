@@ -14,6 +14,8 @@ var PythonShell = require('python-shell');
 // Route that classifies a image.
 Router.post('/classify', (req,res) => {
 
+  var binary_image = req.body.binary_image;
+
   var error_response = {
     success : false,
   };
@@ -25,8 +27,8 @@ Router.post('/classify', (req,res) => {
 
   //Options to send to the python script.
   var options = {
-      mode : "text",
-      args: ['test_image.jpg'],
+      mode : "buffer",
+      args: [binary_image],
       scriptPath : './api'
   };
 

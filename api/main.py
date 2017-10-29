@@ -126,11 +126,13 @@ def run_inference_on_image(image):
   Returns:
     Nothing
   """
-  if not tf.gfile.Exists(image):
-    tf.logging.fatal('File does not exist %s', image)
+  # if not tf.gfile.Exists(image):
+  #   tf.logging.fatal('File does not exist %s', image)
 
 
-  image_data = tf.gfile.FastGFile(image, 'rb').read()
+  ## Reads the image as an array of bytes.
+  #image_data = tf.gfile.FastGFile(image, 'rb').read()
+
 
   # Creates graph from saved GraphDef.
   create_graph()
@@ -146,7 +148,7 @@ def run_inference_on_image(image):
     # Runs the softmax tensor by feeding the image_data as input to the graph.
     softmax_tensor = sess.graph.get_tensor_by_name('softmax:0')
     predictions = sess.run(softmax_tensor,
-                           {'DecodeJpeg/contents:0': image_data})
+                           {'DecodeJpeg/contents:0': image})
     predictions = np.squeeze(predictions)
 
     # Creates node ID --> English string lookup.
@@ -183,9 +185,9 @@ def maybe_download_and_extract():
 
 def main(_):
   maybe_download_and_extract()
-  image_file = sys.argv[1];
-  image = ('api/' + image_file)
-  run_inference_on_image(image)
+  image_buffer = sys.argv[1];
+  ##image = ('api/' + image_file)
+  run_inference_on_image(image_buffer)
 
 
 if __name__ == '__main__':
