@@ -46,6 +46,16 @@ Router.post('/classify', (req,res) => {
 });
 
 
+Router.post('/testing', function(req,res){
+
+  var binary_image = req.body.binary_image;
+
+  console.log(binary_image)
+
+  res.send('Testing page.')
+
+})
+
   /*  Cloud Vision Code Snippets. */
 // // The name of the image file to annotate
 // var fileName = './resources/wakeupcat.jpg';
