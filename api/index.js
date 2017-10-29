@@ -52,7 +52,7 @@ Router.post('/testing', function(req,res){
 
   console.log(binary_image)
 
-  res.send('Testing page.')
+  res.send(binary_image)
 
 })
 
