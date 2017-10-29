@@ -27,7 +27,7 @@ Router.post('/classify', (req,res) => {
 
   //Options to send to the python script.
   var options = {
-      mode : "buffer",
+      mode : "binary",
       args: [binary_image],
       scriptPath : './api'
   };
