@@ -35,12 +35,12 @@ import tensorflow as tf
 
 
 from PIL import Image
-import cStringIO
+from io import StringIO
 
 
 
 def ThumbFromBuffer(buf,size):
-    im = Image.open(cStringIO.StringIO(buf))
+    im = Image.open(StringIO(buf))
     im.thumbnail(size, Image.ANTIALIAS)
     return im
 
