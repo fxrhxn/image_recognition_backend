@@ -3,8 +3,8 @@ var app = express();
 var bodyParser = require('body-parser')
 
 //Use the body-parser yeeeet.
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit : '5mb', extended: false }))
-app.use(bodyParser.json())
 
 var api_routes = require('./api');
 
