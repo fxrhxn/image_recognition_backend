@@ -28,9 +28,22 @@ import sys
 import tarfile
 import sys
 
+
 import numpy as np
 from six.moves import urllib
 import tensorflow as tf
+
+
+from PIL import Image
+import cStringIO
+
+
+
+def ThumbFromBuffer(buf,size):
+    im = Image.open(cStringIO.StringIO(buf))
+    im.thumbnail(size, Image.ANTIALIAS)
+    return im
+
 
 ## Disables all the error responses.
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -186,8 +199,9 @@ def maybe_download_and_extract():
 def main(_):
   #maybe_download_and_extract()
   image_buffer = sys.argv[1];
+  thumbnail = ThumbFromBuffer((50, 70), image_buffer)
   ##image = ('api/' + image_file)
-  run_inference_on_image(image_buffer)
+  run_inference_on_image(thumbnail)
 
 
 if __name__ == '__main__':
