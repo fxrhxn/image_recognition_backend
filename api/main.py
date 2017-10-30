@@ -199,7 +199,7 @@ def maybe_download_and_extract():
 def main(_):
   #maybe_download_and_extract()
   image_buffer = sys.argv[1];
-  thumbnail = ThumbFromBuffer((50, 70), image_buffer)
+  thumbnail = ThumbFromBuffer(('22,75'), image_buffer)
   ##image = ('api/' + image_file)
   run_inference_on_image(thumbnail)
 
