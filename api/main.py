@@ -184,7 +184,7 @@ def maybe_download_and_extract():
 
 
 def main(_):
-  maybe_download_and_extract()
+  #maybe_download_and_extract()
   image_buffer = sys.argv[1];
   ##image = ('api/' + image_file)
   run_inference_on_image(image_buffer)
