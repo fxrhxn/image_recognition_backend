@@ -27,7 +27,7 @@ import re
 import sys
 import tarfile
 import sys
-
+import base64
 
 import numpy as np
 from six.moves import urllib
@@ -38,11 +38,24 @@ from PIL import Image
 from io import StringIO
 
 
+## Image buffer sent to the file. 
+#image_buffer = sys.argv[1]
 
-def ThumbFromBuffer(buf,size):
-    im = Image.open(StringIO(buf))
-    im.thumbnail(size, Image.ANTIALIAS)
-    return im
+image_name = "testing.jpg"
+
+## Create an image file for the application. 
+def create_image(img_data):
+    
+    ## Decode all of the new image data. 
+    imgdata = base64.b64decode(img_data)
+
+    # Open and write the new file. 
+    with open(image_name, 'wb') as f:
+         f.write(imgdata)
+
+
+
+
 
 
 ## Disables all the error responses.
@@ -142,10 +155,9 @@ def run_inference_on_image(image):
   # if not tf.gfile.Exists(image):
   #   tf.logging.fatal('File does not exist %s', image)
 
-
   ## Reads the image as an array of bytes.
-  #image_data = tf.gfile.FastGFile(image, 'rb').read()
-
+  img_DATA = tf.gfile.FastGFile(image, 'rb').read()
+  
 
   # Creates graph from saved GraphDef.
   create_graph()
@@ -161,7 +173,7 @@ def run_inference_on_image(image):
     # Runs the softmax tensor by feeding the image_data as input to the graph.
     softmax_tensor = sess.graph.get_tensor_by_name('softmax:0')
     predictions = sess.run(softmax_tensor,
-                           {'DecodeJpeg/contents:0': image})
+                           {'DecodeJpeg/contents:0': img_DATA})
     predictions = np.squeeze(predictions)
 
     # Creates node ID --> English string lookup.
@@ -175,7 +187,7 @@ def run_inference_on_image(image):
 
       ## Data to send back to the server.
       print('%s (score = %.5f)' % (human_string, score))
-
+      
 
 def maybe_download_and_extract():
   """Download and extract model tar file."""
@@ -198,13 +210,17 @@ def maybe_download_and_extract():
 
 def main(_):
   #maybe_download_and_extract()
-  image_buffer = sys.argv[1];
-  thumbnail = ThumbFromBuffer(('22,75'), image_buffer)
-  ##image = ('api/' + image_file)
-  run_inference_on_image(thumbnail)
+  # image_buffer = sys.argv[1];
+  # thumbnail = ThumbFromBuffer(('22,75'), image_buffer)
+  # ##image = ('api/' + image_file)
+  run_inference_on_image(image_name)
 
 
 if __name__ == '__main__':
+
+  ## Create the image first. 
+  #create_image(image_buffer)
+  
   parser = argparse.ArgumentParser()
   # classify_image_graph_def.pb:
   #   Binary representation of the GraphDef protocol buffer.
@@ -237,3 +253,5 @@ if __name__ == '__main__':
 
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+
+
