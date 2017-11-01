@@ -100,21 +100,21 @@ Router.post('/testing', function(req,res){
                   }else{
                     
                     //Make the data more accurate for the results. 
-                    results = results.map(function(da){
+                    // results = results.map(function(da){
                       
                       
-                          var split_arr = da.split('(');
+                    //       var split_arr = da.split('(');
                           
-                          var description = split_arr[0]
+                    //       var description = split_arr[0]
                           
-                          var numbertype = split_arr[1].split('=')[1].slice(0, -1) * 100
+                    //       var numbertype = split_arr[1].split('=')[1].slice(0, -1) * 100
                               
-                          return {
-                              name : description,
-                              percentage : numbertype
-                          }
+                    //       return {
+                    //           name : description,
+                    //           percentage : numbertype
+                    //       }
                       
-                      })
+                    //   })
                     success_response.message = 'Classified test image.'
                     success_response.data = results;
                     
