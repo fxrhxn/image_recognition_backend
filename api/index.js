@@ -120,7 +120,7 @@ Router.post('/testing', function(req,res){
                     success_response.data = results;
                     
           
-                    res.json(success_response)
+                    res.json(results)
           
                     //Remove the file from the server. 
                     fs.unlinkSync(myfilename);
