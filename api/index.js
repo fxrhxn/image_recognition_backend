@@ -68,7 +68,7 @@ Router.post('/testing', function(req,res){
 
 Router.post('/conversion', function(req,res){
 
-  filePath = uuidv1();
+ var myfilename = uuidv1();
 
   var binary_image = req.body.binary_image;
 
@@ -83,13 +83,13 @@ Router.post('/conversion', function(req,res){
   //Options to send to the python script.
   var image_options = {
       mode : "text",
-      args: [binary_image, filePath],
+      args: [binary_image, myfilename],
       scriptPath : './api'
   };
 
   var tf_options = {
     mode : "text",
-    args : [filepath],
+    args : [myfilename],
     scriptPath : './api',
   }
 
@@ -133,7 +133,7 @@ Router.post('/conversion', function(req,res){
           res.json(success_response)
 
           //Remove the file from the server. 
-          fs.unlinkSync(filePath);
+          fs.unlinkSync(myfilename);
 
         }
       })
