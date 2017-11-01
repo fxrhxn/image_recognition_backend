@@ -3,9 +3,11 @@ var Router = express.Router();
 var Vision = require('@google-cloud/vision');
 var spawn = require("child_process").spawn;
 var fs = require('fs');
+var uuidv1 = require('uuid/v1');
 
 // Use python shell
 var PythonShell = require('python-shell');
+
 
 
 //File path for the image classified.
@@ -16,6 +18,8 @@ var filePath = 'testing.jpg';
 // { /api/classify }
 // Route that classifies a image.
 Router.post('/classify', (req,res) => {
+
+  
 
   var binary_image = req.body.binary_image;
 
@@ -64,6 +68,8 @@ Router.post('/testing', function(req,res){
 
 Router.post('/conversion', function(req,res){
 
+  filePath = uuidv1();
+
   var binary_image = req.body.binary_image;
 
   var success_response = {
@@ -77,12 +83,13 @@ Router.post('/conversion', function(req,res){
   //Options to send to the python script.
   var image_options = {
       mode : "text",
-      args: [binary_image],
+      args: [binary_image, filePath],
       scriptPath : './api'
   };
 
   var tf_options = {
     mode : "text",
+    args : [filepath],
     scriptPath : './api',
   }
 
