@@ -59,6 +59,4 @@ testing_arr = testing_arr.map(function(test){
 
 })
 
-console.log(testing_arr);
-
 

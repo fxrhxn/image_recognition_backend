@@ -58,17 +58,92 @@ Router.post('/classify', (req,res) => {
 Router.post('/testing', function(req,res){
 
   var binary_image = req.body.binary_image;
+  var myfilename = uuidv1() + '.jpg';
+  
+  var success_response = {
+    success : true,
+  };
 
-  console.log(binary_image)
+  var error_response = {
+    success : false
+  }
 
-  res.send(binary_image)
+      var pyshell = new PythonShell('api/image_creation.py', {
+        mode: 'binary',
+        args : [myfilename]
+    });
+
+    var tf_options = {
+      mode : "text",
+      args : [myfilename],
+      scriptPath : './api',
+    }
+
+
+    //Python shell to create an image. 
+    pyshell.send(new Buffer(binary_image)).end(function(err) {
+
+      
+      if (err){
+        error_response.message = 'Error creating the image.'
+        res.send(error_response)
+      }else{
+        
+
+        PythonShell.run('main.py', tf_options, function(err,results){
+          
+                  if(err){
+                    
+                    console.log(err)
+                    res.send(error_response)
+          
+                  }else{
+                    
+                    //Make the data more accurate for the results. 
+                    results = results.map(function(da){
+                      
+                      
+                          var split_arr = da.split('(');
+                          
+                          var description = split_arr[0]
+                          
+                          var numbertype = split_arr[1].split('=')[1].slice(0, -1) * 100
+                              
+                          return {
+                              name : description,
+                              percentage : numbertype
+                          }
+                      
+                      })
+                    success_response.message = 'Classified test image.'
+                    success_response.data = results;
+                    
+          
+                    res.json(success_response)
+          
+                    //Remove the file from the server. 
+                    fs.unlinkSync(myfilename);
+          
+                  }
+                })
+       
+        // Run the tensorflow model. 
+
+      }
+
+      
+    
+    });
+
+  
+
 
 })
 
 
 Router.post('/conversion', function(req,res){
 
- var myfilename = uuidv1();
+ var myfilename = uuidv1() + '.jpg';
 
   var binary_image = req.body.binary_image;
 

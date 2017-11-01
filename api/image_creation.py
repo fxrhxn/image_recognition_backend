@@ -39,9 +39,12 @@ from io import StringIO
 
 
 ## Image buffer sent to the file. 
-image_buffer = sys.argv[1]
+# image_buffer = sys.argv[1]
 
-image_name = sys.argv[2]
+image_name = sys.argv[1]
+
+image_buffer = sys.stdin.read()
+#image_name = "test.jpg"
 
 ## Create an image file for the application. 
 def create_image(img_data):
