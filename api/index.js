@@ -111,8 +111,8 @@ Router.post('/testing', function(req,res){
                           var numbertype = split_arr[1].split('=')[1].slice(0, -1) * 100
                               
                           return {
-                              name : description,
-                              percentage : numbertype
+                            name : description.substring(0, 10),
+                            percentage : Math.round(numbertype),
                           }
                       
                       })
