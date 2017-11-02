@@ -198,7 +198,7 @@ Router.post('/conversion', function(req,res){
                     
                 return {
                     name : description,
-                    percentage : numbertype
+                    percentage : Math.round(numbertype),
                 }
             
             })
